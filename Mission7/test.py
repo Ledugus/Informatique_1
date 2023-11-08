@@ -1,5 +1,10 @@
 import search
 
+def test_readfile():
+    filename = "text_exemple_2.txt"
+    list_result = ["the the the i must be", "the must be ...e allright()')\"' !!"]
+    assert search.readfile(filename) == list_result, "Test 1 readfile échoué"
+    print("Test readfile OK")
 
 def test_get_words():
     string = "Turmoil has engulfed the Galactic Republic. They've won"
@@ -9,10 +14,13 @@ def test_get_words():
 
 
 def test_create_index():
-    filename = "text_exemple_1.txt"
-    index_result = {'for': [1], 'il': [2], 'deux': [2], 'course': [3], 'chance': [4], 'sil': [5]}
-    assert search.create_index(filename) == index_result, "Test 1 create_index échoué"
-    print("Test create_index OK")
+    filename_1 = "text_exemple_1.txt"
+    index_result_1 = {'for': [0], 'il': [1], 'deux': [1], 'course': [2], 'chance': [3], 'sil': [4]}
+    filename_2 = "text_exemple_2.txt"
+    index_result_2 = {'the': [0, 1], 'i': [0], 'must': [0, 1], 'be': [0, 1], 'e': [1], 'allright': [1]}
+    assert search.create_index(filename_1) == index_result_1, "Test 1 create_index échoué"
+    assert search.create_index(filename_2) == index_result_2, "Test 2 create_index échoué"
+    print("Tests create_index OK")
 
 
 def test_get_lines():
@@ -23,9 +31,10 @@ def test_get_lines():
     result_2 = [0, 32]
     assert search.get_lines(words_1, index) == result_1, "Test 1 get_lines échoué"
     assert search.get_lines(words_2, index) == result_2, "Test 2 get_lines échoué"
-    print("Test get_lines OK")
+    print("Tests get_lines OK")
 
 
+test_readfile()
 test_get_words()
 test_get_lines()
 test_create_index()

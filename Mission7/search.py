@@ -10,12 +10,14 @@ def readfile(filename):
     lines = []
     try:
         f = open(filename, "r")
-        lines = f.readlines()
+        for line in f:
+            lines.append(line.strip())
         f.close()
 
     except IOError:
         print("Fichier introuvable")
     return lines
+
 
 def clean_ponctuation(word):
     new_word = ""
@@ -45,11 +47,10 @@ def get_words(line):
     Retourne:
         une liste des mots dans la chaÃ®ne, en minuscules, et sans ponctuation.
     """
-    # On sépare les mots en utilisant les espaces comme sÃ©parateurs
-    # On enlÃ¨ve les ponctuations
+    # On sépare les mots en utilisant les espaces comme séparateurs
+    # On enlève les ponctuations
     # On transforme en minuscules
     words = line.split()
-
     words = [word.lower() for word in words]
     words = [clean_ponctuation(word) for word in words if clean_ponctuation(word) != ""]
     return words
@@ -74,7 +75,7 @@ def create_index(filename):
            "of": [0,1], "republic": [0], ... , "jedi": [2], ...}
 
     Args:
-        filename: une chaÃ®ne de caractÃ¨res
+        filename: une chaÃ®ne de caractères
     Retourne:
         un dictionnaire avec pour chaque mot du fichier (en minuscules)
         la liste des indices des lignes qui contiennent ce mot.
@@ -86,7 +87,7 @@ def create_index(filename):
 
         for word in words:
 
-            if word in index:
+            if word in index and line_index not in index[word]:
                 index[word].append(line_index)
             else:
                 index[word] = [line_index]
