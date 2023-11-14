@@ -58,31 +58,42 @@ test_Duree_ajouter()
 ################################
 
 # CREATION DE QUELQUES OBJETS DE LA CLASSE Chanson A TESTER
-c = Chanson("Let's Dance", "David Bowie", Duree(0,4,5))
+c1 = Chanson("Let's_Dance", "David_Bowie", Duree(0,4,5))
+c2 = Chanson("Let's_Dance", "Durée nulle", Duree(0,0,0))
+c3 = Chanson("", "David_Bowie", Duree(0,2,33))
 
 # FONCTION POUR TESTER LA METHODE __str__ DE LA CLASSE Chanson
 def test_Chanson_str(chanson) :
-    # A COMPLETER PAR LES ETUDIANTS
-    pass
+    assert str(chanson) == "Let's_Dance - David_Bowie - 00:04:05", "Test 1 Chanson str"
+    
 
 # APPEL DES DIFFERENTES FONCTIONS TEST
-test_Chanson_str(c)
+test_Chanson_str(c1)
 
 ##############################
 # Tests pour la classe Album #
 ##############################
 
 # CREATION D'UN OBJET DE LA CLASSE Album A TESTER
-# à fournir par les étudiants
-
+album1 = Album(1)
+album2 = Album(2)
+album2.add(c1)
+album2.add(c2)
+album2.add(c3)
+album2_string = "Album 2 (3 chansons, 00:06:38)\n01: Let's_Dance - David_Bowie - 00:04:05\n02: Let's_Dance - Durée nulle - 00:00:00\n03:  - David_Bowie - 00:02:33" 
 # FONCTION POUR TESTER LA METHODE __str__ DE LA CLASSE Album
-# à fournir par les étudiants
+def test_album_str():
+    assert str(album1) == "Album 1 (0 chansons, 00:00:00)", "Test 1 album str"
+    assert str(album2) == album2_string, "Test 2 album str"
 
 # FONCTION POUR TESTER LA METHODE add DE LA CLASSE Album
-# à fournir par les étudiants
-
+def test_album_add():
+    
+    assert album2.add(Chanson(", ",", " , Duree(h=2))) == False, "Test 1 album add"
+    print(album2)
 # APPEL DES DIFFERENTES FONCTIONS TEST
-# à fournir par les étudiants
+test_album_str()
+test_album_add()
 
 #####################################
 # Test du comportement du programme #
