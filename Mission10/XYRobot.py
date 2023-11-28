@@ -56,9 +56,9 @@ class XYRobot(Robot):
         self.__move(distance)
 
     def move_backward(self, distance):
-        self.__move(distance)
+        self.__move(-distance)
 
-    def __move(self, distance):
+    def __move(self, distance, undo=False):
         """ méthode auxiliaire pour faire avancer ou reculer le robot en dessinant sa trace
             si distance > 0  fait avancer le robot de distance pixels
             si distance < 0  fait reculer le robot de distance pixels
@@ -69,33 +69,43 @@ class XYRobot(Robot):
         orientation_y = sin(self.angle_rad())
         self.__set_x(old_x + orientation_x * distance)
         self.__set_y(old_y + orientation_y * distance)
-        print("New position", self.position())
+        
         self.__draw_from(old_x, old_y)
-        self.add_move_to_history("forward", distance)
+        if not undo:
+            self.add_move_to_history("move", distance)
 
     def turn_right(self, angle=90):
         """ fait tourner le robot de 90 degrés vers la droite
             (dans le sens des aiguilles d'une montre)
         """
         self.__turn(angle)
-        self.add_move_to_history("turn", -angle)
+        
 
     def turn_left(self, angle=90):
         """ fait tourner le robot de 90 degrés vers la gauche
             (dans le sens contraire des aiguilles d'une montre)
         """
         self.__turn(-angle)
-        self.add_move_to_history("turn", angle)
+        
 
-    def __turn(self, angle):
+    def __turn(self, angle, undo=False):
         """ méthode auxiliaire pour les méthodes turn_right() et turn_left()
             si direction = 1 change l'angle du robot de 90 degrés vers la droite
                              (dans le sens des aiguilles d'une montre)
             si direction = -1 change l'angle du robot de 90 degrés vers la gauche
                              (dans le sens contraire des aiguilles d'une montre)
         """
-        self.__set_angle(self.angle() + angle)
+        if not undo:
+            self.add_move_to_history("turn", angle)
+        self.__set_angle((self.angle() + angle) % 360)
 
+    def unplay(self):
+        for _ in range(len(self.history())):
+            last_move = self.history().pop()
+            if last_move[0] == "move":
+                self.__move(-last_move[1], undo=True)
+            if last_move[0] == "turn":
+                self.__turn(-last_move[1], undo=True)
 
 # Exemple d'utilisation de cette classe (il suffit d'exécuter ce fichier)
 if __name__ == '__main__':
