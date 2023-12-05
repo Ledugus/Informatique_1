@@ -1,23 +1,21 @@
-from orderedlinkedlist import OrderedLinkedList
-from coureur import Coureur
-from resultat import Resultat
-
-
 class Classement:
     """
-    Une implémentation primitive de classement, ordonné et de capacité fixe.
+    Une implémentation primitive de classement, non ordonnée et de capacité fixe.
     @author Kim Mens
     @version 01 Décembre 2019
     """
 
-    __maxcapacity = 100
+    __maxcapacity = 10
 
     def __init__(self):
         """
         @pre: -
         @post: un classement vide de taille 0 a été créé
         """
-        self.__resultats = OrderedLinkedList()  # liste ordonnée des résultats
+        self.__resultats = {
+        }   # dictionnaire de résultats actuelle (clé = coureur; valeur = résultat)
+        # nombre de résultats actuel (initialement 0, maximum __maxcapacity)
+        self.__size = 0
 
     def size(self):
         """
@@ -26,12 +24,9 @@ class Classement:
         @pre:  -
         @post: Le nombre de résultats actuellement stockés dans ce classement a été retourné.
         """
-        return self.__resultats.size()
+        return self.__size
 
-    def result(self):
-        return self.__resultats
-
-    def add(self, resultat: Resultat):
+    def add(self, r):
         """
         Ajoute un résultat r dans ce classement.
         @pre:  r est une instance de la classe Resultat
@@ -42,11 +37,12 @@ class Classement:
                     Une dictionnaire ne donne pas de garanties sur l'ordre des éléments.
         """
         if self.size() >= self.__maxcapacity:
-            print("ATTENTION MEC, TU VAS TROP LOIN !!!")
+            raise Error("Capacity of classement exceeded")
         else:
-            self.__resultats.add(resultat)
+            self.__size += 1
+            self.__resultats[r.coureur()] = r
 
-    def get(self, coureur: Coureur):
+    def get(self, c):
         """
         Retourne le résultat d'un coureur donné.
         @pre c est un Coureur
@@ -54,12 +50,9 @@ class Classement:
               classement. Retourne None si le coureur ne figure pas (encore)
               dans le classement.
         """
-        try:
-            return self.__resultats.search(coureur)[0]
-        except:
-            return None
+        return self.__resultats.get(c)
 
-    def get_position(self, coureur: Coureur):
+    def get_position(self, c):
         """
         Retourne la meilleure position d'un coureur dans ce classement.
         @pre c est un Coureur
@@ -67,13 +60,15 @@ class Classement:
               à partir de 1 pour la tête de ce classement. Si le coureur figure plusieurs fois
               dans le classement, la première (meilleure) position est retournée.
               Retourne -1 si le coureur ne figure pas dans le classement.
+        ATTENTION : L'implémentation actuelle ne respecte pas encore la post-condition!
+                    Etant donné que la dictionnaire de résultats ne connaît pas de position,
+                    pour le moment cette méthode retourne toujours "***position inconnue***".
+                    A vous de la corriger en utilisant une liste chaînée ordonnée
+                    comme structure de données, plutôt qu'une simple dictionnaire.
         """
-        try:
-            return self.__resultats.search(coureur)[1]
-        except:
-            return -1
+        return "***position inconnue***"
 
-    def remove(self, coureur):
+    def remove(self, c):
         """
         Retire un résultat du classement.
         @pre  c est un Coureur
@@ -81,7 +76,8 @@ class Classement:
               c est comparé au sens de __eq__. Retourne c si un résultat a été retiré,
               of False si c n'est pas trouvé dans la liste.
         """
-        return self.__resultats.remove(coureur)
+        self.__size -= 1
+        return self.__resultats.pop(c, False)
 
     def __str__(self):
         """
@@ -91,4 +87,8 @@ class Classement:
         @post: Retourne une représentation de ce classement sous forme d'un string,
                avec une ligne par résultat.
         """
-        return self.__resultats.__str__(sep="\n")
+        s = ""
+        d = self.__resultats
+        for c in d:
+            s += "  " + str(self.get_position(c)) + " > " + str(d[c]) + "\n"
+        return s

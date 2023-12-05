@@ -1,11 +1,15 @@
-class Resultat :
+from coureur import Coureur
+from temps import Temps
+
+
+class Resultat:
     """
     Le résultat d'un Coureur sur une course cycliste: le coureur et son temps.
     @author  Kim Mens, UCLouvain
     @version 01 Décembre 2019
     """
-    
-    def __init__(self,c,t):
+
+    def __init__(self, c: Coureur, t: Temps):
         """
         Crée un nouveau d'un Coureur sur une course cycliste: le coureur et son temps.
         @pre: c est une instance de Coureur
@@ -15,7 +19,7 @@ class Resultat :
         self.__coureur = c  # le coureur
         self.__temps = t    # le temps effectué
 
-    def coureur(self):
+    def coureur(self) -> Coureur:
         """
         Méthode accesseur.
         Retourne le coureur.
@@ -24,7 +28,7 @@ class Resultat :
         """
         return self.__coureur
 
-    def temps(self):
+    def temps(self) -> Temps:
         """
         Méthode accesseur.
         Retourne le temps.
@@ -33,7 +37,7 @@ class Resultat :
         """
         return self.__temps
 
-    def __eq__(self, autre):
+    def __eq__(self, autre: 'Resultat'):
         """
         Méthode magique.
         Vérifié si ce résultat est égal à un autre, sur base de leur temps.
@@ -42,9 +46,9 @@ class Resultat :
                au temps du résultat autre passé en paramètre;
                retourne False sinon.
         """
-        return ( self.temps() == autre.temps() )
+        return (self.coureur() == autre.coureur())
 
-    def __ge__(self, autre):
+    def __ge__(self, autre: 'Resultat'):
         """
         Méthode magique.
         Vérifié si ce résultat est plus grand ou égal au résultat passé en
@@ -54,9 +58,9 @@ class Resultat :
                grand que ou égale au temps du résultat autre passé en
                paramètre; retourne False sinon.
         """
-        return ( self.temps() >= autre.temps() )
+        return (self.temps() >= autre.temps())
 
-    def __lt__(self, autre):
+    def __lt__(self, autre: 'Resultat'):
         """
         Méthode magique.
         Vérifié si ce résultat est plus petit que le résultat passé en
@@ -66,8 +70,8 @@ class Resultat :
                petit que le résultat autre passé en paramètre;
                retourne False sinon.
         """
-        return not ( self.temps() >= autre.temps() )
-        
+        return not (self.temps() >= autre.temps())
+
     def __str__(self):
         """
         Méthode magique.
@@ -77,4 +81,4 @@ class Resultat :
                sous la forme de texte "NomCoureur: heures:minutes:secondes"
                Par exemple, "Alfred    : 05:02:10"
         """
-        return "{0: <10} : {1}".format(self.coureur().nom(),self.temps())
+        return "{0: <10} : {1}".format(self.coureur().nom(), self.temps())

@@ -10,8 +10,8 @@ class LinkedList:
         """
         self.__length = 0
         self.__head = None
-        for cargo in reversed(lst):
-            self.add(cargo)
+        for cargo in lst:
+            self.insert(cargo)
 
     def size(self):
         """
@@ -28,38 +28,24 @@ class LinkedList:
         """
         return self.__head
 
-    def add(self, cargo):
-        """
-        Adds a new Node with given cargo to the front of this LinkedList.
-        @pre:  self is a (possibly empty) LinkedList.
-        @post: A new Node object is created with the given cargo.
-               This new Node is added to the front of the LinkedList.
-               The length counter has been incremented.
-               The head of the list now points to this new node.
-               Nothing is returned.
-        """
-        node = Node(cargo, self.__head)
-        self.__head = node
-        self.__length += 1
-
-    def remove(self):
+    def remove_head(self):
         if self.__head is not None:
             self.__head = self.__head.next()
             self.__length -= 1
 
-    def insert(self, s):
-        to_insert = Node(s)
+    def insert(self, cargo):
+        to_insert = Node(cargo)
         self.__length += 1
         if self.__head == None:
             self.__head = to_insert
             return
-        elif self.__head.value() > s:
+        elif self.__head.value() > cargo:
             to_insert.set_next(self.__head)
             self.__head = to_insert
             return
         current = self.__head
         while type(current) == Node and type(current.next()) == Node:
-            if current.next().value() > s:
+            if current.next().value() > cargo:
                 break
             current = current.next()
 
