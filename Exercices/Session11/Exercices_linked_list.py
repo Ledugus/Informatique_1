@@ -86,6 +86,15 @@ class LinkedList:
             self.__head.print_backward()
         print("]")
 
+    def __str__(self) -> str:
+        s = "[ "
+        tail = self.__head
+        while tail:
+            s += str(tail.value()) + " "
+            tail = tail.next()
+        s += "]"
+        return s
+
 
 class Node:
     """ Represents a Node in a LinkedList data structure. """

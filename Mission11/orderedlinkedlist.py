@@ -80,22 +80,6 @@ class OrderedLinkedList:
             node = node.next()
         return r
 
-    def print(self):
-        """
-        Prints the contents of this LinkedList and its nodes.
-        @pre:  self is a (possibly empty) LinkedList
-        @post: Has printed a space-separated list of the form "[ a b c ... ]",
-               where "a", "b", "c", ... are the string representation of each
-               of the linked list's nodes.
-               A space is printed after and before the opening and closing bracket,
-               as well as between any two elements.
-               An empty linked is printed as "[ ]"
-        """
-        print("[", end=" ")
-        if self.__head is not None:
-            self.__head.print_list()
-        print("]")
-
     def search(self, cargo):
         """Renvoie le premier élément égal à cargo et sa position (commence à 1)
 
@@ -111,29 +95,13 @@ class OrderedLinkedList:
             node = node.next()
         return None
 
-    def print_backward(self):
-        """
-        Prints the contents of this LinkedList and its nodes, back to front.
-        @pre:  self is a (possibly empty) LinkedList
-        @post: Has printed a space-separated list of the form "[ ... c b a ]",
-               where "a", "b", "c", ... are the string representation of each
-               of the LinkedList's nodes. The nodes are printed in opposite order:
-               the last nodes' value are printed first.
-               A space is printed after and before the opening and closing bracket,
-               as well as between any two elements.
-               An empty linked is printed as "[ ]"
-        """
-        print("[", end=" ")
-        if self.__head is not None:
-            self.__head.print_backward()
-        print("]")
-
-    def __str__(self, sep=" ") -> str:
-        s = ""
-        i = 1
-        for cargo in self.get_as_array():
-            s += f"{i}  {cargo}" + sep
-            i += 1
+    def __str__(self) -> str:
+        s = "[ "
+        tail = self.__head
+        while tail:
+            s += str(tail.value()) + " "
+            tail = tail.next()
+        s += "]"
         return s
 
 
@@ -198,33 +166,3 @@ class Node:
             return self.value() == other.value()
         else:
             return False
-
-    def print_list(self):
-        """
-        Prints the cargo of this node and then recursively
-        of each node connected to this one.
-        @pre:  -
-        @post: Has printed a space-separated list of the form "a b c ... ",
-               where "a" is the string-representation of this node,
-               "b" is the string-representation of my next node, and so on.
-               A space is printed after each printed value.
-        """
-        print(self.value(), end=" ")     # print my value
-        tail = self.next()       # go to my next node
-        if tail is not None:    # as long as the end of the list has not been reached
-            tail.print_list()    # recursively print remainder of the list
-
-    def print_backward(self):
-        """
-        Recursively prints the cargo of each node connected to this node (in opposite order),
-        and then prints the cargo of this node as last value.
-        @pre:  -
-        @post: Has printed a space-separated list of the form "... c b a",
-               where a is my cargo (self), b is the cargo of the next node, and so on.
-               The nodes are printed in opposite order: the last node's value
-               is printed first.
-        """
-        tail = self.next()        # go to my next node
-        if tail is not None:     # as long as the end of the list has not been reached
-            tail.print_backward()  # recursively print remainder of the list backwards
-        print(self.value(), end=" ")    # print my value

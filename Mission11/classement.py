@@ -42,7 +42,7 @@ class Classement:
                     Une dictionnaire ne donne pas de garanties sur l'ordre des éléments.
         """
         if self.size() >= self.__maxcapacity:
-            print("ATTENTION MEC, TU VAS TROP LOIN !!!")
+            raise RuntimeError("Trop d'éléments dans la liste des résultats")
         else:
             self.__resultats.add(resultat)
 
@@ -91,4 +91,4 @@ class Classement:
         @post: Retourne une représentation de ce classement sous forme d'un string,
                avec une ligne par résultat.
         """
-        return self.__resultats.__str__(sep="\n")
+        return self.__resultats.__str__()
