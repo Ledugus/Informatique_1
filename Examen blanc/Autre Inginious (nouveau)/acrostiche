@@ -1,0 +1,17 @@
+def first_letter(line) -> str:
+    for char in line:
+        if char.isalpha():
+            return char
+    return ""
+
+
+def acrostiche(file_name):  # Ne pas effacer cette ligne
+    try:
+        f = open(file_name, "r")
+    except:
+        return -1
+    c = ""
+    for line in f.readlines():
+        if line.strip():
+            c += first_letter(line)
+    return c
